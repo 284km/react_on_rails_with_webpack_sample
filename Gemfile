@@ -13,4 +13,4 @@ gem "mysql2", ">= 0.3.18", "< 0.5"
 # end
 
 
-gem 'mini_racer', platforms: :ruby
+# gem 'mini_racer', platforms: :ruby
