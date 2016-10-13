@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <%= yield %>
     <%= javascript_include_tag webpack_asset_path('main.js') %>
+    <%= react_component("HelloWorldApp", props: @hello_world_props, prerender: false) %>
   </body>
 </html>
