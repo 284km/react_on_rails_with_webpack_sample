@@ -4,6 +4,8 @@ const path = require('path');
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
+const ManifestPlugin = require('webpack-manifest-plugin');
+
 const config = {
   entry: [
     'es5-shim/es5-shim',
@@ -13,8 +15,8 @@ const config = {
   ],
 
   output: {
-    filename: 'webpack-bundle.js',
-    path: '../app/assets/webpack',
+    filename: 'main-[hash].js',
+    path: '../public/javascripts',
   },
 
   resolve: {
@@ -30,6 +32,7 @@ const config = {
         NODE_ENV: JSON.stringify(nodeEnv),
       },
     }),
+    new ManifestPlugin(),
   ],
   module: {
     loaders: [

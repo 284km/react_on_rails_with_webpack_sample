@@ -9,5 +9,6 @@
 
   <body>
     <%= yield %>
+    <%= javascript_include_tag webpack_asset_path('main.js') %>
   </body>
 </html>

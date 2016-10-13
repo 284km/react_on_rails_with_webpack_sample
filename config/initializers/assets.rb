@@ -8,3 +8,8 @@
 
 # Add folder with webpack generated assets to assets.paths
 # Rails.application.config.assets.paths << Rails.root.join("app", "assets", "webpack")
+Rails.application.config.webpack_manifest =
+  if File.exist?(Rails.root.join('public', 'javascripts', 'manifest.json'))
+    JSON.parse(File.read(Rails.root.join('public', 'javascripts', 'manifest.json')))
+  end
+
