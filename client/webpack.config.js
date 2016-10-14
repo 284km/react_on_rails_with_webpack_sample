@@ -34,6 +34,7 @@ const config = [
           NODE_ENV: JSON.stringify(nodeEnv),
         },
       }),
+      new ManifestPlugin(),
     ],
     module: {
       loaders: [
@@ -77,7 +78,7 @@ const config = [
         },
       }),
       new ManifestPlugin(),
-      new ExtractTextPlugin(`${fileName}.css`)
+      new ExtractTextPlugin("main-[hash].css"),
     ],
   }
 ];
