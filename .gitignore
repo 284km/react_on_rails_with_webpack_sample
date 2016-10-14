@@ -22,4 +22,4 @@ node_modules
 # Generated js bundles
 /app/assets/webpack/*
 
-public/javascripts
+public/assets

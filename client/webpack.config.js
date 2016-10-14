@@ -4,50 +4,83 @@ const path = require('path');
 const devBuild = process.env.NODE_ENV !== 'production';
 const nodeEnv = devBuild ? 'development' : 'production';
 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 
-const config = {
-  entry: [
-    'es5-shim/es5-shim',
-    'es5-shim/es5-sham',
-    'babel-polyfill',
-    './app/bundles/HelloWorld/startup/HelloWorldApp',
-  ],
-
-  output: {
-    filename: 'main-[hash].js',
-    path: '../public/javascripts',
-  },
-
-  resolve: {
-    extensions: ['', '.js', '.jsx'],
-    alias: {
-      react: path.resolve('./node_modules/react'),
-      'react-dom': path.resolve('./node_modules/react-dom'),
+const config = [
+  {
+    entry: [
+      'es5-shim/es5-shim',
+      'es5-shim/es5-sham',
+      'babel-polyfill',
+      './app/bundles/HelloWorld/startup/HelloWorldApp',
+    ],
+  
+    output: {
+      filename: 'main-[hash].js',
+      path: '../public/assets',
+    },
+  
+    resolve: {
+      extensions: ['', '.js', '.jsx'],
+      alias: {
+        react: path.resolve('./node_modules/react'),
+        'react-dom': path.resolve('./node_modules/react-dom'),
+      },
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(nodeEnv),
+        },
+      }),
+    ],
+    module: {
+      loaders: [
+        {
+          test: require.resolve('react'),
+          loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham',
+        },
+        {
+          test: /\.jsx?$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
+        },
+      ],
     },
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(nodeEnv),
-      },
-    }),
-    new ManifestPlugin(),
-  ],
-  module: {
-    loaders: [
-      {
-        test: require.resolve('react'),
-        loader: 'imports?shim=es5-shim/es5-shim&sham=es5-shim/es5-sham',
-      },
-      {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-      },
+  {
+    devtool: "source-map",
+    entry: {
+      style: './src/stylesheets/application.scss'
+    },
+    output: {
+      path: '../public/assets',
+      filename: 'main-[hash].css'
+    },
+    module: {
+      loaders: [
+        {
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+        },
+        {
+          test: /\.scss$/,
+          loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader")
+        }
+      ]
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify(nodeEnv),
+        },
+      }),
+      new ManifestPlugin(),
+      new ExtractTextPlugin(`${fileName}.css`)
     ],
-  },
-};
+  }
+];
 
 module.exports = config;
 
