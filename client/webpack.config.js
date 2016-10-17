@@ -9,11 +9,13 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 
 const config = [
   {
+    devtool: "source-map",
     entry: [
       'es5-shim/es5-shim',
       'es5-shim/es5-sham',
       'babel-polyfill',
       './app/bundles/HelloWorld/startup/HelloWorldApp',
+      './src/stylesheets/application.scss',
     ],
   
     output: {
@@ -35,6 +37,7 @@ const config = [
         },
       }),
       new ManifestPlugin(),
+      new ExtractTextPlugin("main-[hash].css"),
     ],
     module: {
       loaders: [
@@ -47,20 +50,6 @@ const config = [
           loader: 'babel-loader',
           exclude: /node_modules/,
         },
-      ],
-    },
-  },
-  {
-    devtool: "source-map",
-    entry: {
-      style: './src/stylesheets/application.scss'
-    },
-    output: {
-      path: '../public/assets',
-      filename: 'main-[hash].css'
-    },
-    module: {
-      loaders: [
         {
           test: /\.css$/,
           loader: ExtractTextPlugin.extract("style-loader", "css-loader")
@@ -68,19 +57,10 @@ const config = [
         {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!sass-loader")
-        }
-      ]
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify(nodeEnv),
         },
-      }),
-      new ManifestPlugin(),
-      new ExtractTextPlugin("main-[hash].css"),
-    ],
-  }
+      ],
+    },
+  },
 ];
 
 module.exports = config;
