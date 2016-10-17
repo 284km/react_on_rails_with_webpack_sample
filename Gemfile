@@ -1,8 +1,10 @@
 source "https://rubygems.org"
 
 gem "rails"
-gem "react_on_rails"
+
+gem "mini_racer"
 gem "mysql2", ">= 0.3.18", "< 0.5"
+gem "react_on_rails"
 
 # group :development, :test do
 #   gem "byebug", platform: :mri
@@ -12,5 +14,3 @@ gem "mysql2", ">= 0.3.18", "< 0.5"
 #   gem "web-console"
 # end
 
-
-# gem 'mini_racer', platforms: :ruby
